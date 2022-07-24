@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:maps/map/options/map_o.dart';
 import 'package:maps/map/options/tile_layer_o.dart';
@@ -25,7 +26,10 @@ class MapView extends StatelessWidget{
   Widget build(BuildContext context) {
     return FlutterMap(
       options: MapO(center: center, zoom: zoom, plugins: plugins),
-      children: [ TileLayerW( tileOptions: TileLayerO()),],
+      children: [
+        TileLayerW( tileOptions: TileLayerO()),
+        LocationMarkerLayerWidget() // Ajoute une marque nous indiquer notre position
+      ],
     );
   }
 }
