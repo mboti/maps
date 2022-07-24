@@ -11,11 +11,13 @@ class MapView extends StatelessWidget{
 
   /// latlong2: ^0.8.1 me permet de récuperer les "LatLng"
   final LatLng center;
+  final MapController mapController;
   final double zoom;
   final List<MapPlugin> plugins;
 
-  MapView({
+  const MapView({
     Key? key,
+    required this.mapController,
     required this.center,
     required this.zoom,
     required this.plugins
@@ -25,10 +27,13 @@ class MapView extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
+      //key: ValueKey(MediaQuery.of(context).orientation),
+      mapController: mapController,
       options: MapO(center: center, zoom: zoom, plugins: plugins),
       children: [
         TileLayerW( tileOptions: TileLayerO()),
-        LocationMarkerLayerWidget() // Ajoute une marque nous indiquer notre position
+        // Ajoute une marque nous indiquer notre position
+        LocationMarkerLayerWidget(),
       ],
     );
   }
