@@ -33,4 +33,11 @@ class LocationManager{
 
   Future<Position> errorString(String err) async => await Future.error(err);
 
+  Stream<Position> positionListener(){
+    const accuracy = LocationAccuracy.high;
+    const distance = 10; //MAJ de la position tous les 10m par exemple
+    const LocationSettings locationSettings = LocationSettings(accuracy: accuracy, distanceFilter: distance);
+    return Geolocator.getPositionStream(locationSettings: locationSettings);
+  }
+
 }

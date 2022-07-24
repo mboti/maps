@@ -7,13 +7,15 @@ class AppBarView extends PreferredSize{
   final Function() followPosition;
   final Function() zoomIn;
   final Function() zoomOut;
+  final Icon followIcon;
 
   AppBarView({
     required this.context,
     required this.menuPressed,
     required this.followPosition,
     required this.zoomIn,
-    required this.zoomOut
+    required this.zoomOut,
+    required this.followIcon,
   }): super(
       preferredSize: Size.fromHeight(125),
     child: Container(
@@ -41,7 +43,8 @@ class AppBarView extends PreferredSize{
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    IconButton(onPressed: followPosition, icon: const Icon(Icons.location_on), color: Colors.white,),
+                    //IconButton(onPressed: followPosition, icon: const Icon(Icons.location_on), color: Colors.white,),
+                    IconButton(onPressed: followPosition, icon: followIcon, color: Colors.white,),
                     IconButton(onPressed: zoomIn, icon: const Icon(Icons.zoom_in), color: Colors.white,),
                     IconButton(onPressed: zoomOut, icon: const Icon(Icons.zoom_out), color: Colors.white,),
                   ],
