@@ -32,6 +32,7 @@ class MapScaffoldState extends State<MapScaffold>{
       MapView(
         center: LatLng(latitude, longitude),
         zoom: 12,
+        plugins: [],
       ),
 
     );
