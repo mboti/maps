@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:maps/map/custom_marker.dart';
 import 'package:maps/model/map_type.dart';
 import 'package:maps/model/remarkable_place.dart';
+import 'package:maps/services/datas_manager.dart';
 import 'package:maps/services/location_manager.dart';
 import 'package:maps/view/app_bar_view.dart';
 import 'package:maps/view/drawer_view.dart';
@@ -50,6 +52,7 @@ class MapScaffoldState extends State<MapScaffold>{
     super.initState();
     center = LatLng(widget.startPosition.latitude, widget.startPosition.longitude);
     observePositionChanges(); //Observons le changement de position
+    getMarkers();
   }
 
   @override
@@ -100,21 +103,19 @@ class MapScaffoldState extends State<MapScaffold>{
         final lon = tap.longitude;
         RemarkablePlace newPlace = RemarkablePlace(lat: lat, lon: lon);
         final String toBeSave = newPlace.toBeSavedString;
-        final Marker newMarker = Marker(
-            point: event.tapPosition,
-            builder: (context){
-              return const Icon(Icons.local_airport_outlined, color: Colors.red);
-            }
-        );
-        setState(() {
-          markers.add(newMarker);
-        });
-        // Ajouter au Shared preference
 
+        // Ajouter au Shared preference
+        DatasManager().saveDatas(toBeSave).then((success) => getMarkers());
       }
       //zoom = event.zoom; //remplacer par mapController pour corriger un bug sous iOS
       zoom = mapController.zoom; //Garder en mémoire le zoom
     });
+  }
+
+  getMarkers() async {
+    final newMarkers = await DatasManager().getDatas();
+    final list = newMarkers.map((e) => CustomMarker(savedString: e)).toList();
+    setState(() => markers = list);
   }
 
   updatePosition(Position position){

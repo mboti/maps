@@ -25,5 +25,5 @@ class RemarkablePlace{
 
   LatLng get center => LatLng(lat, lon);
 
-  String get toBeSavedString => "$lat & $lon";
+  String get toBeSavedString => "$lat&$lon";   // le & servira de lors du split
 }
