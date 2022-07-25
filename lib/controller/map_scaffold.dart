@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:maps/model/map_type.dart';
 import 'package:maps/services/location_manager.dart';
 import 'package:maps/view/app_bar_view.dart';
+import 'package:maps/view/drawer_view.dart';
 import 'package:maps/view/map_view.dart';
 
 
@@ -23,6 +25,11 @@ class MapScaffold extends StatefulWidget{
 
 class MapScaffoldState extends State<MapScaffold>{
 
+  // Attributs
+  GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  MapType mapType = MapType.simple;
+
   MapController mapController = MapController();
   double zoom = 12;
   LatLng center = LatLng(0, 0);
@@ -32,6 +39,9 @@ class MapScaffoldState extends State<MapScaffold>{
 
   bool shouldFollow = true;
   Icon get followIcon => Icon((shouldFollow) ? Icons.location_on : Icons.location_off, color: Colors.white,);
+
+
+
 
   @override
   void initState() {
@@ -50,6 +60,7 @@ class MapScaffoldState extends State<MapScaffold>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBarView(
         context: context,
         menuPressed: menuPressed,
@@ -58,6 +69,11 @@ class MapScaffoldState extends State<MapScaffold>{
         zoomOut: zoomOut,
         followIcon: followIcon,
       ),
+
+      drawer: DrawerView(
+        onDrawerTap: onDrawerTap,
+      ),
+
       body: MapView(
         mapController: mapController,
         center: center,
@@ -89,7 +105,7 @@ class MapScaffoldState extends State<MapScaffold>{
 
   //Actions relatives aux controles
   menuPressed(){
-
+    scaffoldKey.currentState?.openDrawer();
   }
 
   // Cette méthode va nous permettre d'avoir comme référentiel soit une personne soit la carte
@@ -111,6 +127,13 @@ class MapScaffoldState extends State<MapScaffold>{
     setState(() {
       zoom = mapController.zoom - 0.5;
       mapController.move(center, zoom);
+    });
+  }
+
+  onDrawerTap(MapType mapType){
+    setState(() {
+      this.mapType = mapType;
+      Navigator.of(context).pop();
     });
   }
 }
