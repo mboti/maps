@@ -5,6 +5,8 @@ import 'package:latlong2/latlong.dart';
 import 'package:maps/map/options/map_o.dart';
 import 'package:maps/map/options/tile_layer_o.dart';
 import 'package:maps/map/widgets/tile_layer_w.dart';
+import 'package:maps/model/map_type.dart';
+import 'package:maps/model/map_type_handler.dart';
 
 
 class MapView extends StatelessWidget{
@@ -14,13 +16,17 @@ class MapView extends StatelessWidget{
   final MapController mapController;
   final double zoom;
   final List<MapPlugin> plugins;
+  final MapType mapType;
+  final List<Marker> markers;
 
   const MapView({
     Key? key,
     required this.mapController,
     required this.center,
     required this.zoom,
-    required this.plugins
+    required this.plugins,
+    required this.mapType,
+    required this.markers
   }):super(key: key);
 
 
@@ -34,6 +40,8 @@ class MapView extends StatelessWidget{
         TileLayerW( tileOptions: TileLayerO()),
         // Ajoute une marque nous indiquer notre position
         LocationMarkerLayerWidget(),
+        //ajout des calques sur ma view en fonction du Drawer
+        MapTypeHandler().layerForType(mapType, markers),
       ],
     );
   }
